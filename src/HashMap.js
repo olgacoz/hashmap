@@ -36,7 +36,7 @@ export default class HashMap {
 
     this.#checkBoundaries(index);
 
-    if (this.buckets[index] === undefined) {
+    if (!this.buckets[index]) {
       // bucket is empty
       const list = new LinkedList();
       list.prepend({ key, value });
