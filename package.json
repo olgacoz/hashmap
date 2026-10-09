@@ -1,0 +1,26 @@
+{
+  "name": "hashmap",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/olgacoz/hashmap#readme",
+  "bugs": {
+    "url": "https://github.com/olgacoz/hashmap/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olgacoz/hashmap.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.29.7",
+    "eslint": "^10.12.0",
+    "jest": "^30.5.2",
+    "prettier": "^3.9.9"
+  }
+}
