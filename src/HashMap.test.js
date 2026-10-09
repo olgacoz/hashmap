@@ -103,3 +103,28 @@ describe("get method", () => {
     expect(hashMap.get("1236")).toBe("guest");
   });
 });
+
+describe("has method", () => {
+  test("returns false for empty HashMap", () => {
+    expect(hashMap.has("123")).toBe(false);
+  });
+
+  test("returns false if key is not in the hash map", () => {
+    hashMap.set("hello", "world");
+    hashMap.set("random", "stuff");
+    expect(hashMap.has("modnar")).toBe(false);
+  });
+
+  test("return true if key is in the hash map", () => {
+    hashMap.set("1234", "admin");
+    const index = hashMap.hash("1234");
+
+    jest.spyOn(hashMap, "hash").mockReturnValue(index);
+    hashMap.set("1235", "user");
+    hashMap.set("1236", "guest");
+
+    expect(hashMap.has("1234")).toBe(true);
+    expect(hashMap.has("1235")).toBe(true);
+    expect(hashMap.has("1236")).toBe(true);
+  });
+});
