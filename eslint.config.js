@@ -9,6 +9,7 @@ export default defineConfig([
     extends: ["js/recommended"],
     languageOptions: { globals: globals.node },
     rules: {
+      "no-unused-vars": "warn",
       "no-unused-private-class-members": "warn",
     },
   },
