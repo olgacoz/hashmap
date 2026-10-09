@@ -89,4 +89,24 @@ export default class HashMap {
     }
     return undefined;
   }
+
+  has(key) {
+    const index = this.hash(key);
+
+    this.#checkBoundaries(index);
+
+    const bucket = this.#buckets[index];
+    if (!bucket) {
+      return false;
+    }
+
+    let node = bucket.headNode;
+    while (node !== null) {
+      if (node.value.key === key) {
+        return true;
+      }
+      node = node.nextNode;
+    }
+    return false;
+  }
 }
