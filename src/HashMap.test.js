@@ -9,7 +9,7 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-describe("hash module", () => {
+describe("hash method", () => {
   test("order matters", () => {
     expect(hashMap.hash("ab")).not.toBe(hashMap.hash("ba"));
   });
@@ -75,5 +75,31 @@ describe("set method", () => {
     const nodeValues = [bucket.headNode.value, bucket.headNode.nextNode.value];
     expect(nodeValues).toContainEqual({ key: "firstKey", value: "Value 1" });
     expect(nodeValues).toContainEqual({ key: "secondKey", value: "Value 2" });
+  });
+});
+
+describe("get method", () => {
+  test("returns undefined for empty HashMap", () => {
+    expect(hashMap.get("no such key")).toBeUndefined();
+  });
+
+  test("returns undefined if there is no such a key", () => {
+    hashMap.set("std. 1", "Michael");
+    hashMap.set("std. 2", "Morgan");
+
+    expect(hashMap.get("std. 3")).toBeUndefined();
+  });
+
+  test("returns the associated value if key is found", () => {
+    hashMap.set("1234", "admin");
+    const index = hashMap.hash("1234");
+
+    jest.spyOn(hashMap, "hash").mockReturnValue(index);
+    hashMap.set("1235", "user");
+    hashMap.set("1236", "guest");
+
+    expect(hashMap.get("1234")).toBe("admin");
+    expect(hashMap.get("1235")).toBe("user");
+    expect(hashMap.get("1236")).toBe("guest");
   });
 });
