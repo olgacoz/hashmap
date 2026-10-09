@@ -69,4 +69,24 @@ export default class HashMap {
         want to leave implementing this particular behavior until later
       */
   }
+
+  get(key) {
+    const index = this.hash(key);
+
+    this.#checkBoundaries(index);
+
+    const bucket = this.#buckets[index];
+    if (!bucket) {
+      return undefined;
+    }
+
+    let node = bucket.headNode;
+    while (node !== null) {
+      if (node.value.key === key) {
+        return node.value.value;
+      }
+      node = node.nextNode;
+    }
+    return undefined;
+  }
 }
