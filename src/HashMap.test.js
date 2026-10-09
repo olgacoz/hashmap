@@ -18,7 +18,11 @@ describe("hash module", () => {
     "!@0129u3asdk lqwh!=21++eqjhdsaoijqwe",
     "o",
     "p",
-  ])("returns hash code in range [0, capacity) for '%s'", (key) => {
+    0,
+    42,
+    999999,
+    -15,
+  ])("returns hash code in range [0, capacity) for %p", (key) => {
     const index = hashMap.hash(key);
     expect(index).toBeGreaterThanOrEqual(0);
     expect(index).toBeLessThan(hashMap.capacity);
