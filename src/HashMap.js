@@ -12,6 +12,6 @@ export default class HashMap {
       hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % this.capacity;
     }
 
-    return hashCode % this.capacity;
+    return hashCode;
   }
 }
