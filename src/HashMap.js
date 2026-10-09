@@ -3,15 +3,20 @@ import LinkedList from "./LinkedList.js";
 export default class HashMap {
   #loadFactor;
   #capacity;
+  #buckets;
 
   constructor(loadFactor = 0.75, capacity = 16) {
     this.#loadFactor = loadFactor;
     this.#capacity = capacity;
-    this.buckets = new Array(this.#capacity);
+    this.#buckets = new Array(this.#capacity);
   }
 
   get capacity() {
     return this.#capacity;
+  }
+
+  get buckets() {
+    return this.#buckets;
   }
 
   hash(key) {
@@ -26,7 +31,7 @@ export default class HashMap {
   }
 
   #checkBoundaries(index) {
-    if (index < 0 || index >= this.buckets.length) {
+    if (index < 0 || index >= this.#buckets.length) {
       throw new Error("Trying to access index out of bounds");
     }
   }
@@ -36,7 +41,7 @@ export default class HashMap {
 
     this.#checkBoundaries(index);
 
-    if (!this.buckets[index]) {
+    if (!this.#buckets[index]) {
       // bucket is empty
       const list = new LinkedList();
       list.prepend({ key, value });
@@ -46,7 +51,7 @@ export default class HashMap {
     }
 
     // bucket is not empty
-    let node = this.buckets[index].headNode;
+    let node = this.#buckets[index].headNode;
     while (node !== null) {
       if (node.value.key === key) {
         // key already exists. update the old value
@@ -55,7 +60,7 @@ export default class HashMap {
       }
       node = node.nextNode;
     }
-    this.buckets[index].prepend({ key, value });
+    this.#buckets[index].prepend({ key, value });
 
     /* TODO:
         Remember to grow your buckets to double their capacity when your
