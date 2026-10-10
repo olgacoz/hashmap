@@ -52,16 +52,37 @@ export default class HashMap {
   }
 
   set(key, value) {
-    if (this.#length >= Math.floor(this.#loadFactor * this.#capacity)) {
-      this.#resize();
-    }
-
-    const index = this.hash(key);
+    let index = this.hash(key);
 
     this.#checkBoundaries(index);
 
-    if (!this.#buckets[index]) {
-      // bucket is empty
+    // check whether key already exists
+    let bucket = this.#buckets[index];
+    if (bucket) {
+      let node = bucket.headNode;
+
+      while (node !== null) {
+        if (node.value.key === key) {
+          // key already exists. update the old value
+          node.value.value = value;
+          return;
+        }
+        node = node.nextNode;
+      }
+    }
+
+    // resize only when inserting a new key would exceed the threshold
+    if (this.#length >= Math.floor(this.#loadFactor * this.#capacity)) {
+      this.#resize();
+
+      // recalculate the index because the capacity has changed
+      index = this.hash(key);
+      this.#checkBoundaries(index);
+      bucket = this.#buckets[index];
+    }
+
+    // insert into an empty bucket
+    if (!bucket) {
       const list = new LinkedList();
       list.prepend({ key, value });
 
@@ -70,16 +91,7 @@ export default class HashMap {
       return;
     }
 
-    // bucket is not empty
-    let node = this.#buckets[index].headNode;
-    while (node !== null) {
-      if (node.value.key === key) {
-        // key already exists. update the old value
-        node.value.value = value;
-        return;
-      }
-      node = node.nextNode;
-    }
+    // Insert into a non-empty bucket
     this.#buckets[index].prepend({ key, value });
     this.#length++;
   }
