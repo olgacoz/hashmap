@@ -245,3 +245,37 @@ describe("values method", () => {
     expect(hashMap.values()).toEqual([]);
   });
 });
+
+describe("entries method", () => {
+  test("returns array of all key-value pairs of a hash map in their own arrays", () => {
+    jest
+      .spyOn(hashMap, "hash")
+      .mockReturnValueOnce(3)
+      .mockReturnValueOnce(3)
+      .mockReturnValueOnce(3)
+      .mockReturnValueOnce(2)
+      .mockReturnValueOnce(2);
+
+    hashMap.set("9213", "user");
+    hashMap.set("821", "banned");
+    hashMap.set("91234", "banned");
+    hashMap.set("921", "high stake player");
+    hashMap.set("2823", "admin");
+
+    const entries = hashMap.entries();
+    const expected = [
+      ["9213", "user"],
+      ["821", "banned"],
+      ["91234", "banned"],
+      ["921", "high stake player"],
+      ["2823", "admin"],
+    ];
+
+    expect(entries).toHaveLength(expected.length);
+    expect(entries).toEqual(expect.arrayContaining(expected));
+  });
+
+  test("returns empty array if hash map is empty", () => {
+    expect(hashMap.entries()).toEqual([]);
+  });
+});
