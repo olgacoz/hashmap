@@ -185,3 +185,30 @@ describe("clear method", () => {
     expect(hashMap.buckets.length).toBe(hashMap.capacity);
   });
 });
+
+describe("keys method", () => {
+  test("returns array containing all the keys inside hash map.", () => {
+    jest
+      .spyOn(hashMap, "hash")
+      .mockReturnValueOnce(3)
+      .mockReturnValueOnce(3)
+      .mockReturnValueOnce(3)
+      .mockReturnValueOnce(2)
+      .mockReturnValueOnce(2);
+
+    hashMap.set("9213", "user");
+    hashMap.set("821", "banned");
+    hashMap.set("91234", "banned");
+    hashMap.set("921", "high stake player");
+    hashMap.set("2823", "admin");
+
+    const keys = hashMap.keys().sort();
+    const expected = ["9213", "821", "91234", "921", "2823"].sort();
+
+    expect(keys).toEqual(expected);
+  });
+
+  test("returns empty array if hash map is empty", () => {
+    expect(hashMap.keys()).toEqual([]);
+  });
+});
