@@ -145,4 +145,8 @@ export default class HashMap {
     });
     return length;
   }
+
+  clear() {
+    this.#buckets = new Array(this.#capacity);
+  }
 }
