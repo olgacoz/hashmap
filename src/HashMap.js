@@ -133,4 +133,16 @@ export default class HashMap {
     }
     return false;
   }
+
+  length() {
+    let length = 0;
+
+    this.#buckets.forEach((bucket) => {
+      // guard against slots explicitly set to undefined
+      if (bucket) {
+        length += bucket.size();
+      }
+    });
+    return length;
+  }
 }
