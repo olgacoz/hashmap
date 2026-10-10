@@ -166,3 +166,22 @@ describe("length method", () => {
     expect(hashMap.length()).toBe(4);
   });
 });
+
+describe("clear method", () => {
+  test("removes all entries in the hash map", () => {
+    hashMap.set("Hello", "World");
+    hashMap.set("123", "Admin");
+    hashMap.set("James", "Bond");
+    hashMap.set("2823", "user");
+
+    hashMap.clear();
+    expect(hashMap.length()).toBe(0);
+    expect(hashMap.buckets.length).toBe(hashMap.capacity);
+  });
+
+  test("removes all entries of empty hash map", () => {
+    hashMap.clear();
+    expect(hashMap.length()).toBe(0);
+    expect(hashMap.buckets.length).toBe(hashMap.capacity);
+  });
+});
