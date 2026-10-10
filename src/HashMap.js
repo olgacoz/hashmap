@@ -3,11 +3,14 @@ import LinkedList from "./LinkedList.js";
 export default class HashMap {
   #loadFactor;
   #capacity;
+  #initialCapacity;
   #buckets;
+  #length = 0;
 
   constructor(loadFactor = 0.75, capacity = 16) {
     this.#loadFactor = loadFactor;
     this.#capacity = capacity;
+    this.#initialCapacity = capacity;
     this.#buckets = new Array(this.#capacity);
   }
 
@@ -36,7 +39,23 @@ export default class HashMap {
     }
   }
 
+  #resize() {
+    const entries = this.entries(); // get the entries before doubling number of buckets
+
+    this.#capacity = this.#capacity * 2;
+    this.#buckets = new Array(this.#capacity); // double number of buckets
+    this.#length = 0;
+
+    entries.forEach(([key, value]) => {
+      this.set(key, value);
+    });
+  }
+
   set(key, value) {
+    if (this.#length >= Math.floor(this.#loadFactor * this.#capacity)) {
+      this.#resize();
+    }
+
     const index = this.hash(key);
 
     this.#checkBoundaries(index);
@@ -46,7 +65,8 @@ export default class HashMap {
       const list = new LinkedList();
       list.prepend({ key, value });
 
-      this.buckets[index] = list;
+      this.#buckets[index] = list;
+      this.#length++;
       return;
     }
 
@@ -61,13 +81,7 @@ export default class HashMap {
       node = node.nextNode;
     }
     this.#buckets[index].prepend({ key, value });
-
-    /* TODO:
-        Remember to grow your buckets to double their capacity when your
-        hash map exceeds the load factor. The methods mentioned later in
-        this assignment can help you handle the growth logic, so you may
-        want to leave implementing this particular behavior until later
-      */
+    this.#length++;
   }
 
   get(key) {
@@ -126,6 +140,7 @@ export default class HashMap {
     while (node !== null) {
       if (node.value.key === key) {
         bucket.removeAt(position);
+        this.#length--;
         return true;
       }
       node = node.nextNode;
@@ -135,19 +150,13 @@ export default class HashMap {
   }
 
   length() {
-    let length = 0;
-
-    this.#buckets.forEach((bucket) => {
-      // guard against slots explicitly set to undefined
-      if (bucket) {
-        length += bucket.size();
-      }
-    });
-    return length;
+    return this.#length;
   }
 
   clear() {
+    this.#capacity = this.#initialCapacity;
     this.#buckets = new Array(this.#capacity);
+    this.#length = 0;
   }
 
   keys() {
