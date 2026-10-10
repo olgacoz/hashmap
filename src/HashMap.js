@@ -166,4 +166,21 @@ export default class HashMap {
 
     return keys;
   }
+
+  values() {
+    const values = [];
+
+    this.#buckets.forEach((bucket) => {
+      if (bucket) {
+        let node = bucket.headNode;
+
+        while (node !== null) {
+          values.push(node.value.value);
+          node = node.nextNode;
+        }
+      }
+    });
+
+    return values;
+  }
 }
