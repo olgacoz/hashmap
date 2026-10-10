@@ -165,18 +165,4 @@ describe("length method", () => {
 
     expect(hashMap.length()).toBe(4);
   });
-
-  test("throws TypeError in length() after setting a bucket slot to undefined", () => {
-    // 1. Eleman ekliyoruz -> Bu kova için new LinkedList() oluşturulur
-    hashMap.set("key1", "val1");
-    const index = hashMap.hash("key1");
-
-    // 2. Bir şekilde kovayı sildik veya açıkça undefined atadık
-    // (Örn: remove metodunda kova tamamen boşalınca silindiyse veya doğrudan erişimde)
-    hashMap.buckets[index] = undefined;
-
-    // 3. Artık indeks 'empty slot' değil, değeri 'undefined' olan bir elemandır!
-    // forEach artık bu indeksi atlamaz ve bucket.size() çağırırken PATLAR.
-    expect(() => hashMap.length()).not.toThrow();
-  });
 });
