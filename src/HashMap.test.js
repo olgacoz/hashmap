@@ -319,3 +319,37 @@ describe("entries method", () => {
     expect(hashMap.entries()).toEqual([]);
   });
 });
+
+describe("test methods after resize", () => {
+  test("all methods work correctly after resizing", () => {
+    const loadFactor = 0.75;
+    const initialCapacity = 16;
+    const hashMap = new HashMap(loadFactor, initialCapacity);
+
+    const threshold = Math.floor(loadFactor * initialCapacity);
+    const itemCount = threshold + 3;
+
+    for (let i = 0; i < itemCount; i++) {
+      hashMap.set(`key${i}`, `value${i}`);
+    }
+
+    expect(hashMap.capacity).toBeGreaterThan(initialCapacity);
+    expect(hashMap.length()).toBe(itemCount);
+
+    expect(hashMap.has("key0")).toBe(true);
+    expect(hashMap.get("key0")).toBe("value0");
+    expect(hashMap.has("nonExistent")).toBe(false);
+
+    expect(hashMap.keys().length).toBe(itemCount);
+    expect(hashMap.values().length).toBe(itemCount);
+    expect(hashMap.entries().length).toBe(itemCount);
+
+    expect(hashMap.remove("key0")).toBe(true);
+    expect(hashMap.has("key0")).toBe(false);
+    expect(hashMap.length()).toBe(itemCount - 1);
+
+    hashMap.clear();
+    expect(hashMap.length()).toBe(0);
+    expect(hashMap.keys()).toEqual([]);
+  });
+});
