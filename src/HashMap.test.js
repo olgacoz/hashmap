@@ -96,6 +96,26 @@ describe("set method", () => {
       expect(hashMap.get(`key${i}`)).toBe(`value${i}`);
     }
   });
+
+  test("does not resize when updating an existing key at the threshold", () => {
+    const loadFactor = 0.75;
+    const initialCapacity = 16;
+    const hashMap = new HashMap(loadFactor, initialCapacity);
+    const threshold = Math.floor(loadFactor * initialCapacity);
+
+    for (let i = 0; i < threshold; i++) {
+      hashMap.set(`key${i}`, `value${i}`);
+    }
+
+    const previousLength = hashMap.length();
+    const previousCapacity = hashMap.capacity;
+
+    hashMap.set("key0", "updatedValue");
+
+    expect(hashMap.get("key0")).toBe("updatedValue");
+    expect(hashMap.length()).toBe(previousLength);
+    expect(hashMap.capacity).toBe(previousCapacity);
+  });
 });
 
 describe("get method", () => {
