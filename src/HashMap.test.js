@@ -128,3 +128,26 @@ describe("has method", () => {
     expect(hashMap.has("1236")).toBe(true);
   });
 });
+
+describe("remove method", () => {
+  test("removes the entry with associated key and returns true", () => {
+    hashMap.set("1234", "admin");
+    const index = hashMap.hash("1234");
+    const bucket = hashMap.buckets[index];
+
+    jest.spyOn(hashMap, "hash").mockReturnValue(index);
+    hashMap.set("1235", "user");
+    hashMap.set("1236", "guest");
+
+    expect(hashMap.remove("1235")).toBe(true);
+    expect(bucket.size()).toBe(2);
+    expect(hashMap.remove("1234")).toBe(true);
+    expect(hashMap.remove("1236")).toBe(true);
+    expect(bucket.size()).toBe(0);
+  });
+
+  test("returns false if key isn't in the hash map", () => {
+    hashMap.set("1234", "admin");
+    expect(hashMap.remove("1235")).toBe(false);
+  });
+});
