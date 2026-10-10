@@ -149,4 +149,21 @@ export default class HashMap {
   clear() {
     this.#buckets = new Array(this.#capacity);
   }
+
+  keys() {
+    const keys = [];
+
+    this.#buckets.forEach((bucket) => {
+      if (bucket) {
+        let node = bucket.headNode;
+
+        while (node !== null) {
+          keys.push(node.value.key);
+          node = node.nextNode;
+        }
+      }
+    });
+
+    return keys;
+  }
 }
