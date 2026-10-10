@@ -76,6 +76,26 @@ describe("set method", () => {
     expect(nodeValues).toContainEqual({ key: "firstKey", value: "Value 1" });
     expect(nodeValues).toContainEqual({ key: "secondKey", value: "Value 2" });
   });
+
+  test("automatically resizes and re-hashes entries when load factor threshold is exceeded", () => {
+    const initialCapacity = hashMap.capacity;
+    const threshold = Math.floor(initialCapacity * 0.75);
+
+    for (let i = 0; i < threshold; i++) {
+      hashMap.set(`key${i}`, `value${i}`);
+    }
+
+    expect(hashMap.capacity).toBe(initialCapacity);
+
+    hashMap.set(`key${threshold}`, `value${threshold}`);
+
+    expect(hashMap.capacity).toBe(initialCapacity * 2);
+    expect(hashMap.length()).toBe(threshold + 1);
+
+    for (let i = 0; i <= threshold; i++) {
+      expect(hashMap.get(`key${i}`)).toBe(`value${i}`);
+    }
+  });
 });
 
 describe("get method", () => {
